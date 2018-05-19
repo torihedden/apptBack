@@ -25,9 +25,15 @@ MongoClient.connect(process.env.MONGODB_URI, function (err, client) {
       })
   });
 
-  app.get('/appointments/search/:param', function (request, response) {
+  app.get('/appointments/search/:param?', function (request, response) {
+    let searchOptions = {};
     let param = request.params.param;
-    db.collection('appointments').find({ description: new RegExp(param, "i") })
+
+    if (param) {
+      searchOptions = { description: new RegExp(param, "i") };
+    }
+
+    db.collection('appointments').find(searchOptions)
       .toArray((error, appointments) => {
         response.send(appointments);
       })
