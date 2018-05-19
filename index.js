@@ -1,7 +1,12 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
 const app = express();
+
+const corsOptions = {
+  origin: '*'
+};
 
 MongoClient.connect(process.env.MONGODB_URI, function (err, client) {
   if (err) {
@@ -9,6 +14,7 @@ MongoClient.connect(process.env.MONGODB_URI, function (err, client) {
   }
   let db = client.db(process.env.DB_NAME);
 
+  app.use(cors(corsOptions));
   app.use(express.json());
   app.use(express.urlencoded({extended: true}));
 
