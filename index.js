@@ -1,24 +1,13 @@
+require('dotenv').config();
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 const app = express();
-const config = require('./config.json');
 
-// the format of the config.json
-// {
-//   "dev" : {
-//     "MONGODB_URI" : "mongoURLhere",
-//     "DB_NAME"     : "dbNameHere"
-//   },
-// ...
-// }
-
-const environment = 'prod';
-
-MongoClient.connect(config[environment].MONGODB_URI, function (err, client) {
+MongoClient.connect(process.env.MONGODB_URI, function (err, client) {
   if (err) {
     console.log(err);
   }
-  let db = client.db(config[environment].DB_NAME);
+  let db = client.db(process.env.DB_NAME);
 
   app.use(express.json());
   app.use(express.urlencoded({extended: true}));
