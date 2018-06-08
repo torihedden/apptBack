@@ -50,6 +50,17 @@ MongoClient.connect(process.env.MONGODB_URI, function (err, client) {
     })
   });
 
+  app.delete('/appointments', function (request, response) {
+    const {id} = request.body;
+    db.collection('appointments').deleteOne({_id: id}, function (error, response) {
+      if (error) {
+        response.send('Error occured when attempting to delete appointment.');
+      } else {
+        response.send('Successfully deleted');
+      }
+    })
+  })
+
   app.listen(process.env.PORT);
   console.log('listening on port ' + process.env.PORT);
 })
